@@ -1,6 +1,8 @@
 Markov chains are fun
 ===
 
+[![Build Status](https://travis-ci.org/devshorts/markov.svg?branch=master)](https://travis-ci.org/devshorts/markov)
+
 Markov chains build a probability map representing a state machine of the next word.
 
 The goal is to parse the corpus with a chain size (lets say 2) which maps a sliding window across
