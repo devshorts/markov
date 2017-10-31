@@ -9,7 +9,7 @@ import scala.collection.mutable
 class Trainer(tokens: Stream[Token]) {
   def train(chainSize: Int): MarkovModel = {
     val map = new mutable.HashMap[Phrase, Seq[WordProb]]()
-    val startPhrases = new mutable.ArrayBuffer[Phrase]()
+    val startPhrases = new mutable.HashSet[Phrase]()
 
 
     tokens.
@@ -17,7 +17,7 @@ class Trainer(tokens: Stream[Token]) {
       foreach(chain => {
         val rootPhrase = Phrase(chain.take(chainSize).map(_.word))
 
-        if (chain.exists(_.isStart)) {
+        if (chain.headOption.exists(_.isStart)) {
           startPhrases += rootPhrase
         }
 
@@ -30,10 +30,10 @@ class Trainer(tokens: Stream[Token]) {
 
           val toAdd = existingPhrase.find(_.word == nextWord.word).map(_.inc).getOrElse(nextWord)
 
-          map.update(rootPhrase, (existingPhrase :+ toAdd).distinct)
+          map.update(rootPhrase, (existingPhrase.filterNot(_.word == toAdd.word) :+ toAdd).distinct)
         }
       })
 
-    MarkovModel(map.toMap, startPhrases = startPhrases)
+    MarkovModel(map.toMap, startPhrases = startPhrases.toSeq)
   }
 }
