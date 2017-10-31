@@ -27,14 +27,14 @@ class Tests extends FlatSpec with Matchers {
   "Trainer" should "create start phrases" in {
     val corpus =
       """
-        |I like apples. I like pears. I like apples. Bob
+        |I like apples. I like pears. I like apples. Bob is awesome,
       """.stripMargin
 
     val markov = new Trainer(Tokenizer.tokenize(corpus)).train(2)
 
     markov.startPhrases shouldEqual Seq(
       Phrase(Seq("i", "like")),
-      Phrase(Seq("bob"))
+      Phrase(Seq("bob", "is"))
     )
   }
 
