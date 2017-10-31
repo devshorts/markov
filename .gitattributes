@@ -1,0 +1,1 @@
+sensitive-info.crl8.conf filter=git-crypt-prod diff=git-crypt-prod
